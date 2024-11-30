@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { LeftSide } from '../../components';
 import FilteredActivityList from '../../components/filter/FilteredActivityList'; // FilteredActivityList 임포트
 import Form from '../../components/Form'; // Form 컴포넌트 임포트
-import { Activity } from '../../../data/excel/ClssrmDataInfo'; // Activity 인터페이스 임포트
+import { Activity } from '../../data/excel/ClssrmDataInfo'; // Activity 인터페이스 임포트
 
 const CenteredContainer = styled.div`
   display: flex;
