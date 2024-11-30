@@ -18,8 +18,9 @@ const ModalContainer = styled.div`
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
-  max-height: 80%;
+  width: 30%;
+  min-height: 20%;
+  max-height: 50%;
   overflow-y: auto;
   z-index: 1001;
 `;
@@ -52,52 +53,48 @@ const AddressItem = styled.li`
   }
 `;
 
+const InputField = styled.input`
+  height: 40px; /* 높이 설정 */
+  padding: 5px; /* 안쪽 여백 */
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 4px; /* 둥근 모서리 */
+  width: 100%; /* 너비 100% */
+  box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 계산 */
+
+  &:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
+    outline: none; /* 기본 포커스 아웃라인 제거 */
+  }
+`;
+
 interface ModalProps {
   isOpen: boolean;
   onClose: (selectedAddress?: string, facilityName?: string) => void;
 }
 
-const facilityAddresses: { [key: string]: string } = {
-  '서울 중앙도서관': '서울특별시 중구 세종대로 110',
-  '부산 해운대 해수욕장': '부산광역시 해운대구 해운대해변로 140',
-  '대구 수성못': '대구광역시 수성구 수성못2길 100',
-  '인천 송도 센트럴파크': '인천광역시 연수구 송도동 30-1',
-  '광주 무등산': '광주광역시 동구 계족산길 297',
-};
-
-// 주소를 키로 하는 시설 이름 매핑
 const addressToFacility: { [key: string]: string } = {
   '서울특별시 중구 세종대로 110': '서울 중앙도서관',
   '부산광역시 해운대구 해운대해변로 140': '부산 해운대 해수욕장',
   '대구광역시 수성구 수성못2길 100': '대구 수성못',
   '인천광역시 연수구 송도동 30-1': '인천 송도 센트럴파크',
   '광주광역시 동구 계족산길 297': '광주 무등산',
-  '서울 중구 세종대로 110': '서울 중앙도서관',
-  '부산 해운대 해수욕장': '부산 해운대 해수욕장',
-  '대구 수성못': '대구 수성못',
-  '인천 송도 센트럴파크': '인천 송도 센트럴파크',
-  '광주 무등산': '광주 무등산',
 };
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [addresses, setAddresses] = useState<any[]>([]);
-  const [filteredAddresses, setFilteredAddresses] = useState<any[]>([]); // 필터링된 주소 목록
+  const [filteredAddresses, setFilteredAddresses] = useState<string[]>([]);
 
   useEffect(() => {
     if (searchTerm) {
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(searchTerm, (result: any, status: any) => {
         if (status === window.kakao.maps.services.Status.OK) {
-          setAddresses(result);
-          filterAddresses(result); // 주소를 필터링
+          filterAddresses(result);
         } else {
-          setAddresses([]);
           setFilteredAddresses([]);
         }
       });
     } else {
-      setAddresses([]);
       setFilteredAddresses([]);
     }
   }, [searchTerm]);
@@ -105,27 +102,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const filterAddresses = (result: any[]) => {
     const validAddresses = Object.keys(addressToFacility);
     const filtered = validAddresses.filter(address =>
-      address.includes(searchTerm) // 사용자가 입력한 값이 주소에 포함된 경우
+      address.includes(searchTerm)
     );
     setFilteredAddresses(filtered);
   };
 
   const handleSelectAddress = (addressName: string) => {
-    const trimmedAddress = addressName.trim();
-    const facilityName = addressToFacility[trimmedAddress];
-
-    console.log('선택된 주소:', trimmedAddress);
-    console.log('매핑된 시설 이름:', facilityName);
-
-    onClose(trimmedAddress, facilityName); // 선택된 주소와 시설 이름을 전달
+    const facilityName = addressToFacility[addressName.trim()];
+    onClose(addressName, facilityName);
   };
 
   return (
     isOpen && (
-      <ModalOverlay>
-        <ModalContainer>
+      <ModalOverlay onClick={() => onClose()}>
+        <ModalContainer onClick={(e) => e.stopPropagation()}>
           <h3>주소 검색</h3>
-          <input
+          <InputField
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

@@ -52,6 +52,10 @@ const InfoContainer = styled.div`
   border-radius: 8px;
   margin-top: 10px;
   background-color: #f9f9f9;
+  min-height: 80px; /* 최소 높이 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 내용이 없을 때 중앙 정렬 */
 `;
 
 const Form: React.FC = () => {
@@ -187,21 +191,18 @@ const Form: React.FC = () => {
         readOnly
       />
       <h3>정보</h3>
-      {/* <Input
-        type="text"
-        name="input4"
-        placeholder="Input 4"
-        value={inputs.input4}
-        onChange={handleChange}
-      /> */}
-      {inputs.name && facilityAddresses[inputs.name] && (
-        <InfoContainer>
-          <h4>{inputs.name}</h4>
-          <p>{facilityAddresses[inputs.name].openInfo}</p>
-          <p>{facilityAddresses[inputs.name].hours}</p>
-          <p>{facilityAddresses[inputs.name].guide}</p>
-        </InfoContainer>
-      )}
+      <InfoContainer>
+        {inputs.name && facilityAddresses[inputs.name] ? (
+          <>
+            <h4>{inputs.name}</h4>
+            <p>{facilityAddresses[inputs.name].openInfo}</p>
+            <p>{facilityAddresses[inputs.name].hours}</p>
+            <p>{facilityAddresses[inputs.name].guide}</p>
+          </>
+        ) : (
+          <p>시설 이름이나 주소를 입력해주세요</p> // 정보가 없을 때 기본 메시지 표시
+        )}
+      </InfoContainer>
       <Map address={address} />
       <Modal 
         isOpen={isModalOpen} 
