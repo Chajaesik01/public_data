@@ -13,7 +13,7 @@ interface MapCoordinates {
   longitude: number;
 }
 
-const Map: React.FC<{ address?: string }> = ({ address }) => {
+const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) => {
   const [map, setMap] = useState<any>(null);
   const [marker, setMarker] = useState<any>(null);
 
@@ -86,6 +86,37 @@ const Map: React.FC<{ address?: string }> = ({ address }) => {
       });
     }
   }, [address, map]); // address와 map이 변경될 때마다 실행
+
+  useEffect(() => {
+    if (name && map) {
+      // 주소를 name에 기반하여 업데이트하려면, 여기서 로직 추가
+      // 예를 들어, name에 따라 특정 주소를 설정하고 지도를 업데이트할 수 있습니다.
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(name, (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const latitude = result[0].y;
+          const longitude = result[0].x;
+          const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
+
+          console.log('이름:', name);
+          console.log('위도:', latitude, '경도:', longitude);
+
+          map.setCenter(moveLatLng); // 지도 중심 이동
+
+          if (marker) {
+            marker.setMap(null); // 기존 마커 제거
+          }
+          const newMarker = new window.kakao.maps.Marker({
+            position: moveLatLng,
+            map: map,
+          });
+          setMarker(newMarker);
+        } else {
+          console.error('이름에 해당하는 주소를 찾을 수 없습니다.'); // 오류 메시지
+        }
+      });
+    }
+  }, [name, map]); // name과 map이 변경될 때마다 실행
 
   return (
     <MapContainer id="map">
