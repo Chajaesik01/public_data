@@ -47,7 +47,7 @@ const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) =
     };
 
     const script = document.createElement('script');
-    script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=ababd67aa0efce0f7ba40f974d4462c3&libraries=services';
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAPS_API_KEY}&libraries=services`;script.onload = getCurrentPosition;
     script.async = true;
     script.onload = getCurrentPosition;
     document.head.appendChild(script);
