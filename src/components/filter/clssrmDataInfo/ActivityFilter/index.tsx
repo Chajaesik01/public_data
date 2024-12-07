@@ -1,14 +1,32 @@
 import React from 'react';
+import styled from 'styled-components';
 
-interface ActivityFilterProps {
+export interface ActivityFilterProps {
   selectedActivity: string;
   setSelectedActivity: React.Dispatch<React.SetStateAction<string>>;
 }
 
+// Styled select component
+const StyledSelect = styled.select`
+    min-width: 200px; /* 최소 너비 설정 */
+    max-height: 40px; /* 고정 높이 설정 */
+    padding: 0 10px; /* 수평 패딩만 추가 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    font-size: 32px; /* 글자 크기 */
+    color: #333; /* 글자 색상 */
+    background-color: white; /* 배경색 */
+    
+    &:focus {
+        border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
+        outline: none; /* 포커스 시 기본 테두리 제거 */
+    }
+`;
+
 const ActivityFilter: React.FC<ActivityFilterProps> = ({ selectedActivity, setSelectedActivity }) => {
   return (
-    <select value={selectedActivity} onChange={e => setSelectedActivity(e.target.value)}>
-      <option value="">모든 활동</option>
+    <StyledSelect value={selectedActivity} onChange={e => setSelectedActivity(e.target.value)}>
+      <option value="">활동을 선택하세요</option>
       <option value="검도">검도</option>
       <option value="게이트볼">게이트볼</option>
       <option value="골볼">골볼</option>
@@ -46,7 +64,7 @@ const ActivityFilter: React.FC<ActivityFilterProps> = ({ selectedActivity, setSe
       <option value="펜싱">펜싱</option>
       <option value="플라잉디스크">플라잉디스크</option>
       <option value="플로어볼">플로어볼</option>
-    </select>
+    </StyledSelect>
   );
 };
 

@@ -1,7 +1,5 @@
-
-import React from 'react';
 import styled from 'styled-components';
-import Form from '../Form'
+
 const RightSideContainer = styled.div`
   width: 50%; /* 너비 설정 */
   height: 100%; /* 부모 높이에 맞춤 */
@@ -11,7 +9,6 @@ const RightSideContainer = styled.div`
 const RightSide = () => {
   return (
     <RightSideContainer>
-      <Form/>
     </RightSideContainer>
   );
 }

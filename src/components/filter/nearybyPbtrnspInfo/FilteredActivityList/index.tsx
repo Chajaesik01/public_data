@@ -25,18 +25,22 @@ export interface NFacilityService {
     PBTRNSP_FCLTY_LO: number;
 }
 
-interface FilterProps {
+export interface FilterProps {
     setSelectedFacility: (facility: string) => void;
-    setNFacilityService: (service: NFacilityService | null) => void;
+    setNFacilityService: (service: NFacilityService | null) => void; // null을 허용
 }
 
-const SuggestionsList = styled.div`
-    border: 1px solid #ccc;
-    background-color: white;
-    position: absolute;
-    z-index: 1;
-    max-height: 150px;
-    overflow-y: auto;
+const SuggestionsList = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 `;
 
 const SuggestionItem = styled.div`
@@ -44,6 +48,69 @@ const SuggestionItem = styled.div`
     cursor: pointer;
     &:hover {
         background-color: #f0f0f0;
+    }
+`;
+
+const FacilitySelectContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    select {
+        min-width: 200px;
+        max-width: 1000px;
+        max-height: 40px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 32px;
+        color: #333;
+        background-color: white;
+        margin-left: 100px;
+
+        &:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+    }
+`;
+
+const StyledSearch = styled.div`
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+
+    input {
+        min-width: 200px;
+        max-height: 40px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 32px;
+        color: #333;
+        background-color: white;
+        margin-left: 20px;
+
+        &:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+    }
+
+    button {
+        width: 100px;
+        height: 40px;
+        padding: 0 10px;
+        margin-left: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #0056b3;
+        }
     }
 `;
 
@@ -59,6 +126,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
     const [name, setName] = useState<string>('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [selectedFacilityName, setSelectedFacilityName] = useState<string>('');
 
     const handleDataLoaded = (data: NFacilityService[]) => {
         if (!dataLoadedRef.current) {
@@ -141,6 +209,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
     const handleSuggestionClick = (facilityName: string) => {
         setName(facilityName);
         setSelectedFacility(facilityName);
+        setSelectedFacilityName(facilityName); // 선택한 시설 이름을 select에 반영
         const selectedActivityInfo = activitiesRef.current.find(activity => activity.SVCH_FCLTY_NM === facilityName);
         setNFacilityService(selectedActivityInfo || null);
         setSuggestions([]);
@@ -148,20 +217,23 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
 
     const handleFacilityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selected = event.target.value;
+        setSelectedFacilityName(selected);
         if (selected) {
             setSelectedFacility(selected);
             const selectedActivityInfo = activitiesRef.current.find(activity => activity.SVCH_FCLTY_NM === selected);
             setNFacilityService(selectedActivityInfo || null);
-            setFilteredActivities(prev => prev.filter(activity => activity.SVCH_FCLTY_NM !== selected));
         }
     };
 
     const handleReset = () => {
+        setSelectedFacility('');
+        setNFacilityService(null);
         setSelectedActivity('');
         setSelectedRegion('');
         setName('');
         setSuggestions([]);
         setFilteredActivities(activitiesRef.current);
+        setSelectedFacilityName(''); // 시설 선택 항목 초기화
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -183,17 +255,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
                         selectedRegion={selectedRegion}
                         setSelectedRegion={setSelectedRegion}
                     />
-                    <label>
-                        시설 선택:
-                        <select onChange={handleFacilityChange} value="">
-                            <option value="">선택하세요</option>
-                            {filteredActivities.map((activity, index) => (
-                                <option key={`${activity.SVCH_FCLTY_NM}-${index}`} value={activity.SVCH_FCLTY_NM}>
-                                    {activity.SVCH_FCLTY_NM}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
+                    <StyledSearch>
                     <form onSubmit={handleSubmit}>
                         <label>
                             시설 이름 검색 :
@@ -203,11 +265,29 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
                                 onChange={handleNameChange}
                             />
                         </label>
-                        <button type="submit">제출</button>
                         <button type="button" onClick={handleReset}>
                             초기화
                         </button>
                     </form>
+                    {suggestions.length === 0 && name && (
+                        <div>검색된 시설이 없습니다.</div>
+                    )}
+                    </StyledSearch>
+
+                    <StyledSearch>
+                    <FacilitySelectContainer>
+                        <label>
+                            시설 선택:
+                            <select onChange={handleFacilityChange} value={selectedFacilityName}>
+                                <option value="">선택하세요</option>
+                                {filteredActivities.map((activity, index) => (
+                                    <option key={`${activity.SVCH_FCLTY_NM}-${index}`} value={activity.SVCH_FCLTY_NM}>
+                                        {activity.SVCH_FCLTY_NM}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                    </FacilitySelectContainer>
                     {suggestions.length > 0 && (
                         <SuggestionsList>
                             {suggestions
@@ -219,9 +299,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
                                 ))}
                         </SuggestionsList>
                     )}
-                    {suggestions.length === 0 && name && (
-                        <div>검색된 시설이 없습니다.</div>
-                    )}
+                </StyledSearch>
                 </>
             )}
         </div>
@@ -229,3 +307,4 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
 };
 
 export default NFilteredActivityList;
+
