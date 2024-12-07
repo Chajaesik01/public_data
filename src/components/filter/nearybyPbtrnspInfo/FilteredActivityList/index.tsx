@@ -31,16 +31,16 @@ interface FilterProps {
 }
 
 const SuggestionsList = styled.ul`
-  position: absolute; // 리스트를 절대 위치로 설정
-  top: 100%; // 인풋창 바로 아래에 위치
-  left: 0; // 인풋창의 왼쪽에 맞추기
-  right: 0; // 인풋창의 오른쪽에 맞추기
-  background-color: white; // 배경색 설정
-  border: 1px solid #ccc; // 테두리 설정
-  z-index: 10; // 다른 요소 위에 표시되도록 설정
-  margin: 0; // 기본 margin 제거
-  padding: 0; // 기본 padding 제거
-  list-style-type: none; // 리스트 스타일 제거
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 `;
 
 const SuggestionItem = styled.div`
@@ -54,61 +54,62 @@ const SuggestionItem = styled.div`
 const FacilitySelectContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* 오른쪽 정렬 */
+    align-items: flex-end;
 
     select {
-                min-width: 200px; /* 최소 너비 설정 */
+        min-width: 200px;
         max-width: 1000px;
-        max-height: 40px; /* 고정 높이 설정 */
-        padding: 0 10px; /* 수평 패딩만 추가 */
-        border: 1px solid #ccc; /* 테두리 색상 */
-        border-radius: 4px; /* 모서리 둥글게 */
-        font-size: 32px; /* 글자 크기 */
-        color: #333; /* 글자 색상 */
-        background-color: white; /* 배경색 */
+        max-height: 40px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 32px;
+        color: #333;
+        background-color: white;
         margin-left: 100px;
 
         &:focus {
-            border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
-            outline: none; /* 포커스 시 기본 테두리 제거 */
+            border-color: #007bff;
+            outline: none;
         }
     }
 `;
+
 const StyledSearch = styled.div`
     font-size: 30px;
-    display: flex; /* flexbox를 사용하여 수평 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
+    display: flex;
+    align-items: center;
 
     input {
-        min-width: 200px; /* 최소 너비 설정 */
-        max-height: 40px; /* 고정 높이 설정 */
-        padding: 0 10px; /* 수평 패딩만 추가 */
-        border: 1px solid #ccc; /* 테두리 색상 */
-        border-radius: 4px; /* 모서리 둥글게 */
-        font-size: 32px; /* 글자 크기 */
-        color: #333; /* 글자 색상 */
-        background-color: white; /* 배경색 */
+        min-width: 200px;
+        max-height: 40px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 32px;
+        color: #333;
+        background-color: white;
         margin-left: 20px;
 
         &:focus {
-            border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
-            outline: none; /* 포커스 시 기본 테두리 제거 */
+            border-color: #007bff;
+            outline: none;
         }
     }
 
     button {
         width: 100px;
         height: 40px;
-        padding: 0 10px; /* 수평 패딩만 추가 */
-        margin-left: 10px; /* input과의 간격 추가 */
-        background-color: #007bff; /* 버튼 배경색 */
-        color: white; /* 버튼 글자 색상 */
-        border: none; /* 테두리 제거 */
-        border-radius: 4px; /* 모서리 둥글게 */
-        cursor: pointer; /* 마우스 커서 변경 */
+        padding: 0 10px;
+        margin-left: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
 
         &:hover {
-            background-color: #0056b3; /* 호버 시 색상 변경 */
+            background-color: #0056b3;
         }
     }
 `;
@@ -208,6 +209,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
     const handleSuggestionClick = (facilityName: string) => {
         setName(facilityName);
         setSelectedFacility(facilityName);
+        setSelectedFacilityName(facilityName); // 선택한 시설 이름을 select에 반영
         const selectedActivityInfo = activitiesRef.current.find(activity => activity.SVCH_FCLTY_NM === facilityName);
         setNFacilityService(selectedActivityInfo || null);
         setSuggestions([]);
@@ -215,7 +217,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
 
     const handleFacilityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selected = event.target.value;
-        setSelectedFacilityName(selected); // 상태 업데이트
+        setSelectedFacilityName(selected);
         if (selected) {
             setSelectedFacility(selected);
             const selectedActivityInfo = activitiesRef.current.find(activity => activity.SVCH_FCLTY_NM === selected);
@@ -224,20 +226,15 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
     };
 
     const handleReset = () => {
-        // 부모 컴포넌트의 상태 초기화
-        setSelectedFacility(''); // 선택된 시설 초기화
-        setNFacilityService(null); // 시설 서비스 초기화
-    
-        // 내부 상태 초기화
+        setSelectedFacility('');
+        setNFacilityService(null);
         setSelectedActivity('');
         setSelectedRegion('');
         setName('');
         setSuggestions([]);
-        setFilteredActivities(activitiesRef.current); // 원래 데이터로 초기화
+        setFilteredActivities(activitiesRef.current);
         setSelectedFacilityName(''); // 시설 선택 항목 초기화
     };
-    
-    
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -310,7 +307,4 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
 };
 
 export default NFilteredActivityList;
-function setActivityInfo(arg0: null) {
-    throw new Error('Function not implemented.');
-}
 

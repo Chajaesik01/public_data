@@ -27,8 +27,8 @@ const TotalFilter: React.FC<TotalFilterProps> = ({
                     onChange={handleProgramChange}
                 >
                     <option value="">시설 옵션을 선택하세요</option>
-                    <option value="장애인 생활체육교실">장애인 생활체육교실</option>
-                    <option value="전국 공공 체육시설 데이터">전국 공공 체육시설 데이터</option>
+                    <option value="장애인 생활체육 교실">장애인 생활체육 교실</option>
+                    <option value="장애인스포츠강좌이용권시설"> 장애인스포츠강좌이용권시설</option>
                 </Select>
             </Label>
         </Container>

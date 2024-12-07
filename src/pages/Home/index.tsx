@@ -173,13 +173,13 @@ const Home = () => {
               onClearMap={handleClearMap} // 맵 초기화 함수 전달
             />
             <StyledFilteredContainer>
-              {selectedProgram === "장애인 생활체육교실" && (
+              {selectedProgram === "장애인 생활체육 교실" && (
                 <FilteredActivityList 
                   setSelectedFacility={setSelectedFacility} 
                   setActivityInfo={handleSelectActivityInfo} // 선택된 활동 정보를 설정합니다.
                 />
               )}
-              {selectedProgram === "전국 공공 체육시설 데이터" && (
+              {selectedProgram === "장애인스포츠강좌이용권시설" && (
                 <NFilteredActivityList
                   setSelectedFacility={setSelectedFacility}
                   setNFacilityService={handleSelectNFacilityService} // 선택된 시설 서비스를 설정합니다.
