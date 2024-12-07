@@ -244,7 +244,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
     return (
         <div style={{ position: 'relative' }}>
             {isLoading ? (
-                <div>데이터 로딩중입니다...</div>
+                <div>초기 데이터 로딩중입니다 이 작업은 최대 1분 정도 걸릴 수 있으며 처음에만 실행됩니다...</div>
             ) : (
                 <>
                     <ActivityFilter
