@@ -146,7 +146,7 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
                 handleDataLoaded(data);
             } else {
                 try {
-                    const response = await fetch('./KS_SVCH_FCLTY_NEARBY_PBTRNSP_INFO_202407.csv');
+                    const response = await fetch('https://media.githubusercontent.com/media/Chajaesik01/public_data/refs/heads/main/public/KS_SVCH_FCLTY_NEARBY_PBTRNSP_INFO_202407.csv');
                     if (!response.ok) {
                         throw new Error('네트워크 응답에 문제가 있습니다.');
                     }

@@ -155,7 +155,7 @@ const FilteredActivityList: React.FC<FilteredActivityListProps> = ({
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await fetch('./KS_DSPSN_LVLH_PHSTRN_CLSSRM_DATA_INFO_202407.csv');
+                const response = await fetch('https://media.githubusercontent.com/media/Chajaesik01/public_data/refs/heads/main/public/KS_DSPSN_LVLH_PHSTRN_CLSSRM_DATA_INFO_202407.csv');
                 const data = await response.text();
                 Papa.parse(data, {
                     header: true,
