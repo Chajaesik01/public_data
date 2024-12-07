@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Activity } from '../../data/excel/ClssrmDataInfo'; 
 import { NFacilityService } from '../../data/csv/NearbyPbtrnspInfo'; 
 import styled from 'styled-components';

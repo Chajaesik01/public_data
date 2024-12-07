@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LeftSide } from '../../components';
-import FilteredActivityList, { FilteredActivityListProps } from '../../components/filter/clssrmDataInfo/FilteredActivityList'; 
-import NFilteredActivityList, { FilterProps } from '../../components/filter/nearybyPbtrnspInfo/FilteredActivityList'; 
+import FilteredActivityList from '../../components/filter/clssrmDataInfo/FilteredActivityList'; 
+import NFilteredActivityList from '../../components/filter/nearybyPbtrnspInfo/FilteredActivityList'; 
 import Form from '../../components/Form'; 
 import TotalFilter from '../../components/filter/TotalFilter'; 
 import { Activity } from '../../data/excel/ClssrmDataInfo'; 
