@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+<<<<<<< HEAD
+.env
+
+public/KS
+
+# Ignore CSV files in public directory
+/public/*.csv
+=======
+
+public/KS*
+>>>>>>> 54cf3d181919d4475f044926c7c93f5df2272903

@@ -70,6 +70,7 @@ const InputField = styled.input`
 interface ModalProps {
   isOpen: boolean;
   onClose: (selectedAddress?: string, facilityName?: string) => void;
+  onSelectAddress: (selectedAddress: string) => void; // 추가된 prop
 }
 
 const addressToFacility: { [key: string]: string } = {
@@ -80,7 +81,7 @@ const addressToFacility: { [key: string]: string } = {
   '광주광역시 동구 계족산길 297': '광주 무등산',
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSelectAddress }) => { // onSelectAddress prop 추가
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredAddresses, setFilteredAddresses] = useState<string[]>([]);
 
@@ -109,7 +110,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   const handleSelectAddress = (addressName: string) => {
     const facilityName = addressToFacility[addressName.trim()];
-    onClose(addressName, facilityName);
+    console.log('선택된 주소:', addressName); // 선택된 주소 로그
+    console.log('시설 이름:', facilityName); // 시설 이름 로그
+    onSelectAddress(addressName); // 선택된 주소를 부모 컴포넌트로 전달
+    onClose(); // 모달 닫기
   };
 
   return (

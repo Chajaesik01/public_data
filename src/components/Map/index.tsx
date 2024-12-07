@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const MapContainer = styled.div`
-  width: 70%;
-  height: 70%;
+  width: 90%;
+  height: 90%;
   position: relative;
-  margin: 10vh 5vw;
+  margin-left: 1.5vw;
+  margin-top: 2vh;
 `;
 
-interface MapCoordinates {
-  latitude: number;
-  longitude: number;
-}
-
-const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) => {
+const Map: React.FC<{ address?: string }> = ({ address }) => {
   const [map, setMap] = useState<any>(null);
   const [marker, setMarker] = useState<any>(null);
 
@@ -47,7 +43,7 @@ const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) =
     };
 
     const script = document.createElement('script');
-    script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=ababd67aa0efce0f7ba40f974d4462c3&libraries=services';
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAPS_API_KEY}&libraries=services`;script.onload = getCurrentPosition;
     script.async = true;
     script.onload = getCurrentPosition;
     document.head.appendChild(script);
@@ -58,17 +54,13 @@ const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) =
   }, []);
 
   useEffect(() => {
-    if (address && map) {
+    if (address) {
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(address, (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
           const latitude = result[0].y;
           const longitude = result[0].x;
           const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
-          
-          // 로그 출력
-          console.log('주소:', address);
-          console.log('위도:', latitude, '경도:', longitude);
           
           map.setCenter(moveLatLng); // 지도 중심 이동
 
@@ -84,23 +76,13 @@ const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) =
           console.error('주소를 찾을 수 없습니다.'); // 오류 메시지
         }
       });
-    }
-  }, [address, map]); // address와 map이 변경될 때마다 실행
-
-  useEffect(() => {
-    if (name && map) {
-      // 주소를 name에 기반하여 업데이트하려면, 여기서 로직 추가
-      // 예를 들어, name에 따라 특정 주소를 설정하고 지도를 업데이트할 수 있습니다.
-      const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(name, (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          const latitude = result[0].y;
-          const longitude = result[0].x;
+    } else if (map) {
+      // address가 undefined일 경우 현재 위치로 이동
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
           const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
-
-          console.log('이름:', name);
-          console.log('위도:', latitude, '경도:', longitude);
-
           map.setCenter(moveLatLng); // 지도 중심 이동
 
           if (marker) {
@@ -111,12 +93,15 @@ const Map: React.FC<{ address?: string; name?: string }> = ({ address, name }) =
             map: map,
           });
           setMarker(newMarker);
-        } else {
-          console.error('이름에 해당하는 주소를 찾을 수 없습니다.'); // 오류 메시지
+        },
+        () => {
+          // 기본 위치로 지도 초기화 (서울)
+          const defaultLatLng = new window.kakao.maps.LatLng(37.5665, 126.978);
+          map.setCenter(defaultLatLng); // 지도 중심 이동
         }
-      });
+      );
     }
-  }, [name, map]); // name과 map이 변경될 때마다 실행
+  }, [address, map]);
 
   return (
     <MapContainer id="map">
