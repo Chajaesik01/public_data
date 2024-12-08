@@ -7,6 +7,7 @@ interface RegionFilterProps {
 }
 
 // Styled select component
+// Styled select component
 const StyledSelect = styled.select`
     min-width: 200px; /* 최소 너비 설정 */
     max-height: 40px; /* 고정 높이 설정 */
@@ -21,7 +22,19 @@ const StyledSelect = styled.select`
         border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
         outline: none; /* 포커스 시 기본 테두리 제거 */
     }
+
+@media (max-width: 768px) {
+    display: flex;
+    max-width: 70vw;
+    min-width: 150px; /* 모바일에서 최소 너비 조정 */
+    max-height: 35px; /* 모바일에서 높이 조정 */
+    font-size: 24px; /* 모바일에서 글자 크기 조정 */
+    padding: 0 8px; /* 모바일에서 패딩 조정 */
+    margin: 0 auto; /* 중앙 정렬을 위한 자동 여백 설정 */
+}
+
 `;
+
 
 const RegionFilter: React.FC<RegionFilterProps> = ({ selectedRegion, setSelectedRegion }) => {
   return (

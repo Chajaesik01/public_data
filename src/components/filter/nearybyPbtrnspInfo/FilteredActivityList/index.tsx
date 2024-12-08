@@ -54,11 +54,15 @@ const SuggestionItem = styled.div`
 const FacilitySelectContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center; /* 중앙 정렬 */
+
+    label {
+        margin-bottom: 10px; /* 레이블과 select 사이 간격 추가 */
+    }
 
     select {
         min-width: 200px;
-        max-width: 1000px;
+        max-width: 100%;
         max-height: 40px;
         padding: 0 10px;
         border: 1px solid #ccc;
@@ -66,11 +70,16 @@ const FacilitySelectContainer = styled.div`
         font-size: 32px;
         color: #333;
         background-color: white;
-        margin-left: 100px;
 
         &:focus {
             border-color: #007bff;
             outline: none;
+        }
+
+        @media (max-width: 768px) {
+            font-size: 20px; /* 모바일에서 select 글자 크기 조정 */
+            width: 100%; /* 부모의 너비를 채우도록 설정 */
+            max-width: 300px; /* 최대 너비 설정 (필요에 따라 조정) */
         }
     }
 `;
@@ -78,7 +87,18 @@ const FacilitySelectContainer = styled.div`
 const StyledSearch = styled.div`
     font-size: 30px;
     display: flex;
-    align-items: center;
+    flex-direction: column; /* 세로 방향으로 배치 */
+    margin-bottom: 20px; /* 아래 여백 추가 */
+
+    label {
+        font-size: 20px; /* 레이블 글자 크기 */
+        margin-bottom: 10px; /* 레이블과 인풋 사이 간격 추가 */
+    }
+
+    .input-button-container {
+        display: flex; /* 인풋과 버튼을 가로로 배치 */
+        align-items: center; /* 수직 중앙 정렬 */
+    }
 
     input {
         min-width: 200px;
@@ -89,11 +109,16 @@ const StyledSearch = styled.div`
         font-size: 32px;
         color: #333;
         background-color: white;
-        margin-left: 20px;
+        margin-right: 10px; /* 버튼과의 간격 추가 */
 
         &:focus {
             border-color: #007bff;
             outline: none;
+        }
+
+        @media (max-width: 768px) {
+            font-size: 20px; /* 모바일에서 글자 크기 조정 */
+            width: 100%; /* 부모의 너비를 채우도록 설정 */
         }
     }
 
@@ -101,7 +126,6 @@ const StyledSearch = styled.div`
         width: 100px;
         height: 40px;
         padding: 0 10px;
-        margin-left: 10px;
         background-color: #007bff;
         color: white;
         border: none;
@@ -110,6 +134,10 @@ const StyledSearch = styled.div`
 
         &:hover {
             background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            font-size: 18px; /* 모바일에서 버튼 글자 크기 조정 */
         }
     }
 `;
@@ -224,7 +252,6 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
             setNFacilityService(selectedActivityInfo || null);
         }
     };
-
     const handleReset = () => {
         setSelectedFacility('');
         setNFacilityService(null);
@@ -235,12 +262,12 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
         setFilteredActivities(activitiesRef.current);
         setSelectedFacilityName(''); // 시설 선택 항목 초기화
     };
-
+    
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         handleReset();
     };
-
+    
     return (
         <div style={{ position: 'relative' }}>
             {isLoading ? (
@@ -256,50 +283,48 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
                         setSelectedRegion={setSelectedRegion}
                     />
                     <StyledSearch>
-                    <form onSubmit={handleSubmit}>
-                        <label>
-                            시설 이름 검색 :
+                        <label>시설 이름 검색 :</label>
+                        <div className="input-button-container">
                             <input
                                 type="text"
                                 value={name}
                                 onChange={handleNameChange}
                             />
-                        </label>
-                        <button type="button" onClick={handleReset}>
-                            초기화
-                        </button>
-                    </form>
-                    {suggestions.length === 0 && name && (
-                        <div>검색된 시설이 없습니다.</div>
-                    )}
+                            <button type="button" onClick={handleReset}>
+                                초기화
+                            </button>
+                        </div>
+                        {suggestions.length === 0 && name && (
+                            <div>검색된 시설이 없습니다.</div>
+                        )}
                     </StyledSearch>
 
                     <StyledSearch>
-                    <FacilitySelectContainer>
-                        <label>
-                            시설 선택:
-                            <select onChange={handleFacilityChange} value={selectedFacilityName}>
-                                <option value="">선택하세요</option>
-                                {filteredActivities.map((activity, index) => (
-                                    <option key={`${activity.SVCH_FCLTY_NM}-${index}`} value={activity.SVCH_FCLTY_NM}>
-                                        {activity.SVCH_FCLTY_NM}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                    </FacilitySelectContainer>
-                    {suggestions.length > 0 && (
-                        <SuggestionsList>
-                            {suggestions
-                                .filter(facilityName => facilityName !== name)
-                                .map((facilityName, index) => (
-                                    <SuggestionItem key={index} onClick={() => handleSuggestionClick(facilityName)}>
-                                        {facilityName}
-                                    </SuggestionItem>
-                                ))}
-                        </SuggestionsList>
-                    )}
-                </StyledSearch>
+                        <FacilitySelectContainer>
+                            <label>
+                                시설 선택:
+                                <select onChange={handleFacilityChange} value={selectedFacilityName}>
+                                    <option value="">선택하세요</option>
+                                    {filteredActivities.map((activity, index) => (
+                                        <option key={`${activity.SVCH_FCLTY_NM}-${index}`} value={activity.SVCH_FCLTY_NM}>
+                                            {activity.SVCH_FCLTY_NM}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                        </FacilitySelectContainer>
+                        {suggestions.length > 0 && (
+                            <SuggestionsList>
+                                {suggestions
+                                    .filter(facilityName => facilityName !== name)
+                                    .map((facilityName, index) => (
+                                        <SuggestionItem key={index} onClick={() => handleSuggestionClick(facilityName)}>
+                                            {facilityName}
+                                        </SuggestionItem>
+                                    ))}
+                            </SuggestionsList>
+                        )}
+                    </StyledSearch>
                 </>
             )}
         </div>
@@ -307,4 +332,3 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
 };
 
 export default NFilteredActivityList;
-
