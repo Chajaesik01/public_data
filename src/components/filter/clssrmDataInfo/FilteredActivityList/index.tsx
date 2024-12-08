@@ -54,6 +54,9 @@ const FacilitySelectContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end; /* 오른쪽 정렬 */
+    select{
+        max-width:100%
+    }
 `;
 
 const HorizontalContainer = styled.div`

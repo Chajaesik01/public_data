@@ -26,7 +26,7 @@ const StyledSelect = styled.select`
 const ActivityFilter: React.FC<ActivityFilterProps> = ({ selectedActivity, setSelectedActivity }) => {
   return (
     <StyledSelect value={selectedActivity} onChange={e => setSelectedActivity(e.target.value)}>
-      <option value="">활동을 선택하세요</option>
+      <option value="">종목을 선택하세요</option>
       <option value="검도">검도</option>
       <option value="게이트볼">게이트볼</option>
       <option value="골볼">골볼</option>
