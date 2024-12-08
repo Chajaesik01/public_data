@@ -263,10 +263,6 @@ const NFilteredActivityList: React.FC<FilterProps> = ({
         setSelectedFacilityName(''); // 시설 선택 항목 초기화
     };
     
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        handleReset();
-    };
     
     return (
         <div style={{ position: 'relative' }}>
