@@ -87,7 +87,7 @@ const FacilitySelectContainer = styled.div`
 const StyledSearch = styled.div`
     font-size: 30px;
     display: flex;
-    flex-direction: column; /* 세로 방향으로 배치 */
+    flex-direction: column; /* 기본적으로 세로 방향으로 배치 */
     margin-bottom: 20px; /* 아래 여백 추가 */
 
     label {
@@ -95,9 +95,16 @@ const StyledSearch = styled.div`
         margin-bottom: 10px; /* 레이블과 인풋 사이 간격 추가 */
     }
 
+    /* 해상도가 769 이상일 때 스타일을 변경 */
+    @media (min-width: 769px) {
+        flex-direction: row; /* 가로 방향으로 배치 */
+        align-items: center; /* 수직 중앙 정렬 */
+    }
+
     .input-button-container {
         display: flex; /* 인풋과 버튼을 가로로 배치 */
         align-items: center; /* 수직 중앙 정렬 */
+        margin-left: 10px; /* 레이블과 인풋 버튼 사이 간격 추가 */
     }
 
     input {
