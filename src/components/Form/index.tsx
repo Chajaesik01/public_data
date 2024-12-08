@@ -59,8 +59,8 @@ const Form: React.FC<FormProps> = ({
             <p>시설 이름: {selectedFacility}</p>
             {activityInfo ? (
                 <InfoSection>
-                    <h3>활동 정보</h3>
-                    <p>활동 이름: {activityInfo.ITEM_NM}</p>
+                    <h3>종목 정보</h3>
+                    <p>종목 이름: {activityInfo.ITEM_NM}</p>
                     <p>지역: {activityInfo.CTPRVN_NM} {activityInfo.SIGNGU_NM}</p>
                     <p>장애인 유형: {activityInfo.TROBL_TY_NM}</p>
                     <p>운영 시간: {activityInfo.OPER_TIME_CN}</p>
