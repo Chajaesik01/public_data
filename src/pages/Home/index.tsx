@@ -16,24 +16,38 @@ import main4 from '../../assets/main4.png';
 const StyledCenteredContainer = styled.div`
   display: flex;
   flex-direction: column; 
-  flex-direction: column; 
   justify-content: center;
   align-items: center;
   width: 80vw;
   height: 80vh; 
   margin: 0 10vw; 
   border: 0.5px solid #000; 
-  position: relative; /* 포지셔닝을 위한 상대 위치 설정 */
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 95vw; /* 모바일에서 폭을 더 늘림 */
+    height: auto; /* 높이를 자동으로 조정 */
+    margin: 0 5vw; /* 모바일에서 여백 조정 */
+  }
 `;
 
 const StyledFilteredContainer = styled.div`
   margin-bottom: 20px; 
+
+  @media (max-width: 768px) {
+    margin-bottom: 15px; /* 모바일에서 여백 조정 */
+  }
 `;
 
 const StyledMainContent = styled.div`
   display: flex;
   width: 100%;
   min-height: 70%;
+  flex-direction: column; /* 모바일에서 세로 정렬 */
+
+  @media (min-width: 769px) {
+    flex-direction: row; /* 데스크탑에서는 가로 정렬 */
+  }
 `;
 
 const CurtainImage = styled.img`
@@ -59,18 +73,27 @@ const OverlayContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  text-align: left; /* 텍스트 왼쪽 정렬 */
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 흰색 배경 */
-  padding: 10px; /* 패딩 추가 */
-  border-radius: 5px; /* 모서리 둥글게 */
+  text-align: left; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  padding: 10px; 
+  border-radius: 5px; 
   color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 텍스트 그림자 추가 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); 
 
   h1 {
     font-size: 64px;
+
+    @media (max-width: 768px) {
+      font-size: 20px; /* 모바일에서 폰트 크기 조정 */
+    }
   }
+
   p { 
     font-size: 32px;
+
+    @media (max-width: 768px) {
+      font-size: 14px; /* 모바일에서 폰트 크기 조정 */
+    }
   }
 `;
 
@@ -85,13 +108,20 @@ const Button = styled.button`
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff; /* 파란색 배경 */
-  color: white; /* 흰색 글자 */
+  background-color: #007bff; 
+  color: white; 
   font-size: 32px;
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3; /* 마우스 오버 시 더 어두운 파란색 */
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 10px;
+    margin-right: 0; /* 모바일에서 여백 조정 */
+    font-size: 20px; /* 폰트 크기 조정 */
+    padding: 8px; /* 패딩 조정 */
   }
 `;
 
